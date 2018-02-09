@@ -1,0 +1,60 @@
+{% extends "webapp/header.html" %}
+{% load mathfilters %}
+{% block content %}
+<form action="{% url 'contact' %}" method="get">
+    <div class="table">
+        <select name="lista">
+            <option value="0">All</option>
+            {% for model in models %}
+            <option value="{{ model.id }}">{{ model.Model_truck }}</option>
+
+            {% endfor %}
+        </select>
+        <input type="submit" style="height: 25px; line-height: 15px; width: 12%; background: white; border: 1px solid;" name="featured" value="Apply"/>
+        <br> <br>
+     <table width="100%" align="center" class="table-bordered">
+            <tr>
+                <th>Garage Number</th>
+                <th>Model</th>
+                <th>Max Weight</th>
+                <th>current Weight</th>
+                <th>overload</th>
+            </tr>
+            {% for garage in garages %}
+            <tr>
+                <td> {{ garage.GarageNo }}</td>
+                <td>{{ garage.model }}</td>
+                <td>{{ garage.model.Model_max_weight }}</td>
+                <td>{{ garage.poid}}</td>
+
+
+                <td>
+                    {% if garage.poid < garage.model.Model_max_weight %}
+                   0%
+                    {% else %}
+                    {% with answer=garage.model.Model_max_weight|sub:garage.poid %}
+
+                       {% with answerv=answer|div:100 %}
+                           {% if answerv < 0 %}
+                    0%
+                    {% else %}
+                     {{ answer|div:100 }}%
+                    {% endif %}
+
+                    {% endwith %}
+
+                    {% endwith %}
+                    {% endif %}
+
+
+                </td>
+            </tr>
+
+
+            {% endfor %}
+        </table>
+        <br>
+
+    </div>
+</form>
+{% endblock %}

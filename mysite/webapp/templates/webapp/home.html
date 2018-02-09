@@ -1,0 +1,49 @@
+{% extends "webapp/header.html" %}
+{% load mathfilters %}
+{% block content %}
+
+<div class="table">
+    <table width="100%" align="center" class="table-bordered">
+        <tr>
+            <th>Garage Number</th>
+            <th>Model</th>
+            <th>Max Weight</th>
+            <th>current Weight</th>
+            <th>overload</th>
+        </tr>
+        {% for garage in garages %}
+        <tr>
+            <td> {{ garage.GarageNo }}</td>
+            <td>{{ garage.model }}</td>
+          <td>{{ garage.model.Model_max_weight }}</td>
+                <td>{{ garage.poid}}</td>
+
+
+                <td>
+                    {% if garage.poid < garage.model.Model_max_weight %}
+                   0%
+                    {% else %}
+                    {% with answer=garage.model.Model_max_weight|sub:garage.poid %}
+
+                       {% with answerv=answer|div:100 %}
+                           {% if answerv < 0 %}
+                    0%
+                    {% else %}
+                     {{ answer|div:100 }}%
+                    {% endif %}
+
+                    {% endwith %}
+
+                    {% endwith %}
+                    {% endif %}
+
+
+                </td>
+        </tr>
+
+
+        {% endfor %}
+    </table>
+
+</div>
+{% endblock %}
